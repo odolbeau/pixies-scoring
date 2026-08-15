@@ -22,7 +22,10 @@ charge des multiplicateurs, des totaux et du classement.
 - **Extension Flower Power** : jusqu'à 6 joueurs, cartes bicolores (comptent
   pour les deux couleurs), chaque carte **face cachée non recouverte**
   rapporte 5 spirales (+ bonus de certaines cartes), et un nouveau symbole
-  ajoute des croix bonus par carte visible d'une couleur donnée.
+  ajoute des croix bonus par carte visible d'une couleur donnée. Dans
+  l'appli, ces spirales/croix bonus n'ont pas de champ dédié : elles se
+  comptent à la main et s'ajoutent directement dans les champs
+  Spirales/Croix d'origine.
 
 Sources : livret de règles officiel Pixies (Bombyx) et extension Flower
 Power.

@@ -21,24 +21,22 @@ export const COLOR_ZONE_MULTIPLIER: Record<RoundNumber, number> = {
 /**
  * Saisie d'un joueur pour une manche.
  *
- * Les champs `uncoveredFacedownCards`, `bonusSpirals` et `bonusCrosses`
- * n'existent qu'avec l'extension Flower Power (ignorés sinon).
+ * Le champ `uncoveredFacedownCards` n'existe qu'avec l'extension Flower
+ * Power (ignoré sinon). Les spirales/croix bonus données par les cartes
+ * spéciales de l'extension n'ont pas de champ dédié : elles se comptent à
+ * la main et se saisissent directement dans `spirals`/`crosses`.
  */
 export interface RoundScoreInput {
   /** Somme des chiffres des cartes validées (carte visible qui en recouvre une cachée). */
   validatedCardsSum: number;
-  /** Nombre de spirales sur les cartes visibles (y compris celles données par les cartes spéciales). */
+  /** Nombre de spirales sur les cartes visibles, bonus des cartes spéciales inclus. */
   spirals: number;
-  /** Nombre de croix sur les cartes visibles. */
+  /** Nombre de croix sur les cartes visibles, bonus des cartes spéciales inclus. */
   crosses: number;
   /** Nombre de cartes dans la plus grande zone de couleur connexe. */
   colorZoneSize: number;
   /** Extension : nombre de cartes face cachée non recouvertes (rapportent 5 spirales chacune). */
   uncoveredFacedownCards?: number;
-  /** Extension : spirales additionnelles données par les cartes spéciales (1 à 3 par carte face cachée non recouverte). */
-  bonusSpirals?: number;
-  /** Extension : croix additionnelles données par les cartes spéciales "1 croix par carte visible d'une couleur". */
-  bonusCrosses?: number;
 }
 
 export const EMPTY_ROUND_SCORE_INPUT: RoundScoreInput = {
@@ -47,8 +45,6 @@ export const EMPTY_ROUND_SCORE_INPUT: RoundScoreInput = {
   crosses: 0,
   colorZoneSize: 0,
   uncoveredFacedownCards: 0,
-  bonusSpirals: 0,
-  bonusCrosses: 0,
 };
 
 export interface RoundScoreBreakdown {
@@ -72,13 +68,13 @@ export function computeRoundScore(
   const validatedCardsPoints = input.validatedCardsSum;
 
   const extensionSpirals = extensionEnabled
-    ? (input.uncoveredFacedownCards ?? 0) * POINTS_PER_UNCOVERED_FACEDOWN_CARD +
-      (input.bonusSpirals ?? 0)
+    ? (input.uncoveredFacedownCards ?? 0) * POINTS_PER_UNCOVERED_FACEDOWN_CARD
     : 0;
-  const extensionCrosses = extensionEnabled ? (input.bonusCrosses ?? 0) : 0;
 
+  // Les spirales/croix bonus de l'extension sont déjà comptées par le joueur
+  // dans input.spirals/input.crosses (pas de champ séparé, voir RoundScoreInput).
   const totalSpirals = input.spirals + extensionSpirals;
-  const totalCrosses = input.crosses + extensionCrosses;
+  const totalCrosses = input.crosses;
   const symbolsPoints = totalSpirals - totalCrosses;
 
   const colorZonePoints = input.colorZoneSize * COLOR_ZONE_MULTIPLIER[round];

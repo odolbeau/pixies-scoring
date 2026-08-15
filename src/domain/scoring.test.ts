@@ -35,35 +35,31 @@ describe("computeRoundScore", () => {
     expect(computeRoundScore(input, 3, false).colorZonePoints).toBe(12);
   });
 
-  it("ignore les champs extension quand l'extension est désactivée", () => {
+  it("ignore uncoveredFacedownCards quand l'extension est désactivée", () => {
     const breakdown = computeRoundScore(
-      {
-        ...EMPTY_ROUND_SCORE_INPUT,
-        uncoveredFacedownCards: 2,
-        bonusSpirals: 3,
-        bonusCrosses: 5,
-      },
+      { ...EMPTY_ROUND_SCORE_INPUT, uncoveredFacedownCards: 2 },
       1,
       false,
     );
     expect(breakdown.totalSpirals).toBe(0);
-    expect(breakdown.totalCrosses).toBe(0);
   });
 
   it("compte 5 spirales par carte face cachée non recouverte avec l'extension", () => {
+    // Les spirales bonus des cartes spéciales n'ont pas de champ dédié :
+    // le joueur les compte à la main et les inclut directement dans `spirals`.
     const breakdown = computeRoundScore(
-      { ...EMPTY_ROUND_SCORE_INPUT, uncoveredFacedownCards: 2, bonusSpirals: 3 },
+      { ...EMPTY_ROUND_SCORE_INPUT, spirals: 3, uncoveredFacedownCards: 2 },
       1,
       true,
     );
-    // 2 * 5 + 3 bonus = 13
+    // 3 (déjà comptées, bonus inclus) + 2 * 5 = 13
     expect(breakdown.totalSpirals).toBe(13);
     expect(breakdown.symbolsPoints).toBe(13);
   });
 
-  it("ajoute les croix bonus de l'extension au total de croix", () => {
+  it("ne modifie pas le total de croix saisi (les bonus y sont déjà inclus)", () => {
     const breakdown = computeRoundScore(
-      { ...EMPTY_ROUND_SCORE_INPUT, spirals: 2, crosses: 1, bonusCrosses: 3 },
+      { ...EMPTY_ROUND_SCORE_INPUT, spirals: 2, crosses: 4 },
       1,
       true,
     );

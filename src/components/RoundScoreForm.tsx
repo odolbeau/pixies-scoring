@@ -65,12 +65,12 @@ export function RoundScoreForm({
           onChange={(v) => set("validatedCardsSum", v)}
         />
         <NumberField
-          label="Spirales"
+          label={extensionEnabled ? "Spirales (bonus cartes spéciales inclus)" : "Spirales"}
           value={merged.spirals}
           onChange={(v) => set("spirals", v)}
         />
         <NumberField
-          label="Croix"
+          label={extensionEnabled ? "Croix (bonus cartes spéciales inclus)" : "Croix"}
           value={merged.crosses}
           onChange={(v) => set("crosses", v)}
         />
@@ -81,23 +81,11 @@ export function RoundScoreForm({
         />
 
         {extensionEnabled && (
-          <>
-            <NumberField
-              label="Cartes face cachée non recouvertes"
-              value={merged.uncoveredFacedownCards ?? 0}
-              onChange={(v) => set("uncoveredFacedownCards", v)}
-            />
-            <NumberField
-              label="Spirales bonus (cartes spéciales)"
-              value={merged.bonusSpirals ?? 0}
-              onChange={(v) => set("bonusSpirals", v)}
-            />
-            <NumberField
-              label="Croix bonus (cartes spéciales)"
-              value={merged.bonusCrosses ?? 0}
-              onChange={(v) => set("bonusCrosses", v)}
-            />
-          </>
+          <NumberField
+            label="Cartes face cachée non recouvertes"
+            value={merged.uncoveredFacedownCards ?? 0}
+            onChange={(v) => set("uncoveredFacedownCards", v)}
+          />
         )}
       </div>
 
