@@ -1,12 +1,16 @@
 import { create } from "zustand";
 import { createGame, submitRound, type GameState } from "../domain/game";
 import type { RoundScoreInput } from "../domain/scoring";
+import { findByName, normalizePlayerName, sortRosterByName, type RosterPlayer } from "../domain/roster";
 import {
   clearCurrentGame,
   loadCurrentGame,
   loadHistory,
+  loadRoster,
   saveCurrentGame,
   saveToHistory,
+  saveRosterPlayer,
+  deleteRosterPlayer,
   deleteFromHistory as deleteFromHistoryDb,
 } from "../storage/db";
 
@@ -15,6 +19,7 @@ interface GameStore {
   hydrated: boolean;
   currentGame: GameState | null;
   history: GameState[];
+  roster: RosterPlayer[];
 
   hydrate: () => Promise<void>;
   startGame: (playerNames: string[], extensionEnabled: boolean) => Promise<void>;
@@ -22,16 +27,29 @@ interface GameStore {
   abandonGame: () => Promise<void>;
   startNewGameFromResult: () => Promise<void>;
   deleteFromHistory: (id: string) => Promise<void>;
+  /** Ajoute un joueur au roster (ou renvoie l'existant si le nom matche déjà). */
+  addRosterPlayer: (name: string) => Promise<RosterPlayer>;
+  removeRosterPlayer: (id: string) => Promise<void>;
 }
 
 export const useGameStore = create<GameStore>((set, get) => ({
   hydrated: false,
   currentGame: null,
   history: [],
+  roster: [],
 
   hydrate: async () => {
-    const [currentGame, history] = await Promise.all([loadCurrentGame(), loadHistory()]);
-    set({ currentGame: currentGame ?? null, history, hydrated: true });
+    const [currentGame, history, roster] = await Promise.all([
+      loadCurrentGame(),
+      loadHistory(),
+      loadRoster(),
+    ]);
+    set({
+      currentGame: currentGame ?? null,
+      history,
+      roster: sortRosterByName(roster),
+      hydrated: true,
+    });
   },
 
   startGame: async (playerNames, extensionEnabled) => {
@@ -68,5 +86,23 @@ export const useGameStore = create<GameStore>((set, get) => ({
   deleteFromHistory: async (id) => {
     await deleteFromHistoryDb(id);
     set({ history: get().history.filter((g) => g.id !== id) });
+  },
+
+  addRosterPlayer: async (rawName) => {
+    const name = normalizePlayerName(rawName);
+    if (!name) throw new Error("Le nom ne peut pas être vide.");
+
+    const existing = findByName(get().roster, name);
+    if (existing) return existing;
+
+    const player: RosterPlayer = { id: crypto.randomUUID(), name };
+    await saveRosterPlayer(player);
+    set({ roster: sortRosterByName([...get().roster, player]) });
+    return player;
+  },
+
+  removeRosterPlayer: async (id) => {
+    await deleteRosterPlayer(id);
+    set({ roster: get().roster.filter((p) => p.id !== id) });
   },
 }));

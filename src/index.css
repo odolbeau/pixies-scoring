@@ -205,26 +205,77 @@ button {
   height: 20px;
 }
 
-.players-list {
+.setup-screen h2 {
+  margin-top: 8px;
+}
+
+.roster-grid {
   display: flex;
-  flex-direction: column;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.roster-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 8px 10px 14px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text-h);
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.roster-chip.selected {
+  border-color: var(--accent);
+  background: var(--winner-bg);
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.roster-chip-remove {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  color: var(--text);
+  opacity: 0.5;
+  font-size: 12px;
+}
+
+.roster-chip-remove:hover,
+.roster-chip-remove:focus-visible {
+  opacity: 1;
+  background: var(--border);
+  outline: none;
+}
+
+.add-player-row {
+  display: flex;
   gap: 8px;
   margin-bottom: 8px;
 }
 
-.player-row {
-  display: flex;
-  gap: 8px;
-}
-
-.player-row input[type="text"] {
+.add-player-row input[type="text"] {
   flex: 1;
+  min-width: 0;
   padding: 12px;
   border-radius: 8px;
   border: 1px solid var(--border);
   background: var(--surface);
   color: var(--text-h);
   font-size: 16px;
+}
+
+.add-player-row .secondary {
+  width: auto;
+  margin-top: 0;
+  white-space: nowrap;
 }
 
 .hint {

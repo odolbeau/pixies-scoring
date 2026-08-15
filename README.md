@@ -34,8 +34,8 @@ Power.
 
 - React + TypeScript + Vite, SPA 100% front-end, sans backend.
 - État applicatif : Zustand.
-- Persistance locale : IndexedDB (partie en cours + historique des parties
-  terminées), via `idb`.
+- Persistance locale : IndexedDB (partie en cours, historique des parties
+  terminées, liste des joueurs connus), via `idb`.
 - Tests unitaires du moteur de score : Vitest (`src/domain`).
 
 ## Structure
