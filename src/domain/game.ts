@@ -5,6 +5,7 @@ import {
   type RoundNumber,
   type RoundScoreInput,
 } from "./scoring";
+import { generateId } from "../lib/id";
 
 export const MIN_PLAYERS_BASE = 2;
 export const MAX_PLAYERS_BASE = 4;
@@ -45,12 +46,12 @@ export function createGame(
   }
 
   const players: Player[] = playerNames.map((name) => ({
-    id: crypto.randomUUID(),
+    id: generateId(),
     name: name.trim(),
   }));
 
   return {
-    id: crypto.randomUUID(),
+    id: generateId(),
     createdAt: new Date().toISOString(),
     status: "in_progress",
     extensionEnabled,

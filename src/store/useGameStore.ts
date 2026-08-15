@@ -2,6 +2,7 @@ import { create } from "zustand";
 import { createGame, submitRound, type GameState } from "../domain/game";
 import type { RoundScoreInput } from "../domain/scoring";
 import { findByName, normalizePlayerName, sortRosterByName, type RosterPlayer } from "../domain/roster";
+import { generateId } from "../lib/id";
 import {
   clearCurrentGame,
   loadCurrentGame,
@@ -95,7 +96,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
     const existing = findByName(get().roster, name);
     if (existing) return existing;
 
-    const player: RosterPlayer = { id: crypto.randomUUID(), name };
+    const player: RosterPlayer = { id: generateId(), name };
     await saveRosterPlayer(player);
     set({ roster: sortRosterByName([...get().roster, player]) });
     return player;
