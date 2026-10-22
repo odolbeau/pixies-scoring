@@ -87,6 +87,7 @@ export function PlayScreen({ game }: PlayScreenProps) {
             player={player}
             round={round}
             extensionEnabled={game.extensionEnabled}
+            littleGiantsEnabled={game.littleGiantsEnabled ?? false}
             value={draft[player.id]}
             onChange={(value) => setDraft((prev) => ({ ...prev, [player.id]: value }))}
           />

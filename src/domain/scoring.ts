@@ -1,5 +1,6 @@
 /**
- * Règles de score de Pixies (jeu de base + extension Flower Power).
+ * Règles de score de Pixies (jeu de base + extensions Flower Power et
+ * Little Giants).
  *
  * L'application ne simule pas le placement des cartes : les joueurs jouent
  * avec les cartes physiques, puis reportent ici les sous-totaux qu'ils lisent
@@ -37,6 +38,16 @@ export interface RoundScoreInput {
   colorZoneSize: number;
   /** Extension : nombre de cartes face cachée non recouvertes (rapportent 5 spirales chacune). */
   uncoveredFacedownCards?: number;
+  /** Extension Little Giants : spirales rapportées par les cartes Géant. */
+  giantsSpirals?: number;
+  /** Extension Little Giants : croix annulées par un Géant (retirées du total des croix). */
+  crossesCancelled?: number;
+}
+
+/** Extensions actives pour la partie. */
+export interface ScoringOptions {
+  flowerPower: boolean;
+  littleGiants: boolean;
 }
 
 export const EMPTY_ROUND_SCORE_INPUT: RoundScoreInput = {
@@ -45,6 +56,8 @@ export const EMPTY_ROUND_SCORE_INPUT: RoundScoreInput = {
   crosses: 0,
   colorZoneSize: 0,
   uncoveredFacedownCards: 0,
+  giantsSpirals: 0,
+  crossesCancelled: 0,
 };
 
 export interface RoundScoreBreakdown {
@@ -63,18 +76,20 @@ const POINTS_PER_UNCOVERED_FACEDOWN_CARD = 5;
 export function computeRoundScore(
   input: RoundScoreInput,
   round: RoundNumber,
-  extensionEnabled: boolean,
+  options: ScoringOptions,
 ): RoundScoreBreakdown {
   const validatedCardsPoints = input.validatedCardsSum;
 
-  const extensionSpirals = extensionEnabled
+  const extensionSpirals = options.flowerPower
     ? (input.uncoveredFacedownCards ?? 0) * POINTS_PER_UNCOVERED_FACEDOWN_CARD
     : 0;
 
   // Les spirales/croix bonus de l'extension sont déjà comptées par le joueur
   // dans input.spirals/input.crosses (pas de champ séparé, voir RoundScoreInput).
-  const totalSpirals = input.spirals + extensionSpirals;
-  const totalCrosses = input.crosses;
+  const giantsSpirals = options.littleGiants ? (input.giantsSpirals ?? 0) : 0;
+  const crossesCancelled = options.littleGiants ? (input.crossesCancelled ?? 0) : 0;
+  const totalSpirals = input.spirals + extensionSpirals + giantsSpirals;
+  const totalCrosses = Math.max(0, input.crosses - crossesCancelled);
   const symbolsPoints = totalSpirals - totalCrosses;
 
   const colorZonePoints = input.colorZoneSize * COLOR_ZONE_MULTIPLIER[round];

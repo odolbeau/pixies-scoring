@@ -26,6 +26,12 @@ describe("createGame", () => {
     expect(() => createGame(names(7), true)).toThrow();
   });
 
+  it("Little Giants seul autorise 6 joueurs", () => {
+    expect(() => createGame(names(6), false, true)).not.toThrow();
+    expect(() => createGame(names(7), false, true)).toThrow();
+    expect(maxPlayersFor(false, true)).toBe(6);
+  });
+
   it("maxPlayersFor reflète la règle de base/extension", () => {
     expect(maxPlayersFor(false)).toBe(4);
     expect(maxPlayersFor(true)).toBe(6);

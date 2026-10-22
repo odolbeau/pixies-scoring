@@ -26,9 +26,15 @@ charge des multiplicateurs, des totaux et du classement.
   l'appli, ces spirales/croix bonus n'ont pas de champ dédié : elles se
   comptent à la main et s'ajoutent directement dans les champs
   Spirales/Croix d'origine.
+- **Extension Little Giants** : 14 cartes Géant placées en haut d'une colonne
+  ou à gauche d'une ligne (hors de la grille 3×3, un par ligne/colonne). Elles
+  rapportent des spirales (par carte validée, sans spirale, d'une couleur
+  donnée ou non validée de leur ligne/colonne) ou annulent les croix de leur
+  ligne. Dans l'appli, deux champs dédiés : « Spirales des Géants » et « Croix
+  annulées par un Géant ». Cumulable avec Flower Power (jusqu'à 6 joueurs).
 
 Sources : livret de règles officiel Pixies (Bombyx) et extension Flower
-Power.
+Power, et livret Little Giants (studiobombyx.com).
 
 ## Stack
 

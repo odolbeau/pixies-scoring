@@ -5,6 +5,10 @@ import {
   validateRoundScoreInput,
 } from "./scoring";
 
+const NONE = { flowerPower: false, littleGiants: false };
+const FLOWER = { flowerPower: true, littleGiants: false };
+const GIANTS = { flowerPower: false, littleGiants: true };
+
 describe("computeRoundScore", () => {
   it("reproduit l'exemple de décompte du livret de règles (manche 1)", () => {
     // 1 + 5 + 7 + 8 = 21 (cartes validées)
@@ -19,7 +23,7 @@ describe("computeRoundScore", () => {
         colorZoneSize: 4,
       },
       1,
-      false,
+      NONE,
     );
 
     expect(breakdown.validatedCardsPoints).toBe(21);
@@ -30,16 +34,16 @@ describe("computeRoundScore", () => {
 
   it("applique le bon multiplicateur de zone de couleur selon la manche", () => {
     const input = { ...EMPTY_ROUND_SCORE_INPUT, colorZoneSize: 3 };
-    expect(computeRoundScore(input, 1, false).colorZonePoints).toBe(6);
-    expect(computeRoundScore(input, 2, false).colorZonePoints).toBe(9);
-    expect(computeRoundScore(input, 3, false).colorZonePoints).toBe(12);
+    expect(computeRoundScore(input, 1, NONE).colorZonePoints).toBe(6);
+    expect(computeRoundScore(input, 2, NONE).colorZonePoints).toBe(9);
+    expect(computeRoundScore(input, 3, NONE).colorZonePoints).toBe(12);
   });
 
   it("ignore uncoveredFacedownCards quand l'extension est désactivée", () => {
     const breakdown = computeRoundScore(
       { ...EMPTY_ROUND_SCORE_INPUT, uncoveredFacedownCards: 2 },
       1,
-      false,
+      NONE,
     );
     expect(breakdown.totalSpirals).toBe(0);
   });
@@ -50,7 +54,7 @@ describe("computeRoundScore", () => {
     const breakdown = computeRoundScore(
       { ...EMPTY_ROUND_SCORE_INPUT, spirals: 3, uncoveredFacedownCards: 2 },
       1,
-      true,
+      FLOWER,
     );
     // 3 (déjà comptées, bonus inclus) + 2 * 5 = 13
     expect(breakdown.totalSpirals).toBe(13);
@@ -61,17 +65,45 @@ describe("computeRoundScore", () => {
     const breakdown = computeRoundScore(
       { ...EMPTY_ROUND_SCORE_INPUT, spirals: 2, crosses: 4 },
       1,
-      true,
+      FLOWER,
     );
     expect(breakdown.totalCrosses).toBe(4);
     expect(breakdown.symbolsPoints).toBe(-2);
+  });
+
+  it("ajoute les spirales des Géants et annule des croix avec Little Giants", () => {
+    const input = {
+      ...EMPTY_ROUND_SCORE_INPUT,
+      spirals: 2,
+      crosses: 4,
+      giantsSpirals: 9,
+      crossesCancelled: 3,
+    };
+    const breakdown = computeRoundScore(input, 1, GIANTS);
+    expect(breakdown.totalSpirals).toBe(11);
+    expect(breakdown.totalCrosses).toBe(1);
+    expect(breakdown.symbolsPoints).toBe(10);
+  });
+
+  it("plafonne les croix annulées à 0 et ignore les champs Géants si l'extension est off", () => {
+    const input = { ...EMPTY_ROUND_SCORE_INPUT, crosses: 2, giantsSpirals: 6, crossesCancelled: 5 };
+    expect(computeRoundScore(input, 1, GIANTS).totalCrosses).toBe(0);
+    const off = computeRoundScore(input, 1, NONE);
+    expect(off.totalSpirals).toBe(0);
+    expect(off.totalCrosses).toBe(2);
+  });
+
+  it("combine Flower Power et Little Giants", () => {
+    const input = { ...EMPTY_ROUND_SCORE_INPUT, uncoveredFacedownCards: 1, giantsSpirals: 4 };
+    const both = { flowerPower: true, littleGiants: true };
+    expect(computeRoundScore(input, 1, both).totalSpirals).toBe(9);
   });
 
   it("autorise un total de manche négatif (croix > spirales+cartes)", () => {
     const breakdown = computeRoundScore(
       { ...EMPTY_ROUND_SCORE_INPUT, crosses: 5 },
       1,
-      false,
+      NONE,
     );
     expect(breakdown.roundTotal).toBe(-5);
   });

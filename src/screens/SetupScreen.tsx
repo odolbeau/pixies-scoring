@@ -10,18 +10,20 @@ export function SetupScreen() {
   const removeRosterPlayer = useGameStore((s) => s.removeRosterPlayer);
 
   const [extensionEnabled, setExtensionEnabled] = useState(false);
+  const [littleGiantsEnabled, setLittleGiantsEnabled] = useState(false);
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
   const [newName, setNewName] = useState("");
   const [error, setError] = useState<string | null>(null);
 
-  const max = maxPlayersFor(extensionEnabled);
+  const max = maxPlayersFor(extensionEnabled, littleGiantsEnabled);
+  const anyExtension = extensionEnabled || littleGiantsEnabled;
 
   function toggleSelect(id: string) {
     setError(null);
     setSelectedIds((prev) => {
       if (prev.includes(id)) return prev.filter((x) => x !== id);
       if (prev.length >= max) {
-        setError(`Maximum ${max} joueurs${extensionEnabled ? "" : " sans l'extension"}.`);
+        setError(`Maximum ${max} joueurs${anyExtension ? "" : " sans extension"}.`);
         return prev;
       }
       return [...prev, id];
@@ -57,9 +59,10 @@ export function SetupScreen() {
     setSelectedIds((prev) => prev.filter((x) => x !== id));
   }
 
-  function handleExtensionToggle(checked: boolean) {
-    setExtensionEnabled(checked);
-    const newMax = maxPlayersFor(checked);
+  function handleExtensionToggle(flowerPower: boolean, littleGiants: boolean) {
+    setExtensionEnabled(flowerPower);
+    setLittleGiantsEnabled(littleGiants);
+    const newMax = maxPlayersFor(flowerPower, littleGiants);
     if (selectedIds.length > newMax) {
       setSelectedIds((prev) => prev.slice(0, newMax));
     }
@@ -79,7 +82,7 @@ export function SetupScreen() {
       .filter((n): n is string => Boolean(n));
 
     try {
-      await startGame(names, extensionEnabled);
+      await startGame(names, extensionEnabled, littleGiantsEnabled);
     } catch (err) {
       setError(err instanceof Error ? err.message : String(err));
     }
@@ -93,9 +96,18 @@ export function SetupScreen() {
         <input
           type="checkbox"
           checked={extensionEnabled}
-          onChange={(e) => handleExtensionToggle(e.target.checked)}
+          onChange={(e) => handleExtensionToggle(e.target.checked, littleGiantsEnabled)}
         />
         <span>Extension Flower Power activée</span>
+      </label>
+
+      <label className="extension-toggle">
+        <input
+          type="checkbox"
+          checked={littleGiantsEnabled}
+          onChange={(e) => handleExtensionToggle(extensionEnabled, e.target.checked)}
+        />
+        <span>Extension Little Giants activée</span>
       </label>
 
       <h2>Joueurs</h2>
@@ -159,7 +171,7 @@ export function SetupScreen() {
 
       <p className="hint">
         {selectedIds.length}/{max} joueurs sélectionnés{" "}
-        {extensionEnabled ? "(avec extension)" : "(sans extension, max 4)"}
+        {anyExtension ? "(avec extension)" : "(sans extension, max 4)"}
       </p>
 
       {error && <p className="error">{error}</p>}

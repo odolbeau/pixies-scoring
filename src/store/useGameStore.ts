@@ -23,7 +23,11 @@ interface GameStore {
   roster: RosterPlayer[];
 
   hydrate: () => Promise<void>;
-  startGame: (playerNames: string[], extensionEnabled: boolean) => Promise<void>;
+  startGame: (
+    playerNames: string[],
+    extensionEnabled: boolean,
+    littleGiantsEnabled: boolean,
+  ) => Promise<void>;
   submitRoundScores: (scores: Record<string, RoundScoreInput>) => Promise<void>;
   abandonGame: () => Promise<void>;
   startNewGameFromResult: () => Promise<void>;
@@ -53,8 +57,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
     });
   },
 
-  startGame: async (playerNames, extensionEnabled) => {
-    const game = createGame(playerNames, extensionEnabled);
+  startGame: async (playerNames, extensionEnabled, littleGiantsEnabled) => {
+    const game = createGame(playerNames, extensionEnabled, littleGiantsEnabled);
     await saveCurrentGame(game);
     set({ currentGame: game });
   },

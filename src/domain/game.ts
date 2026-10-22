@@ -4,6 +4,7 @@ import {
   ROUND_NUMBERS,
   type RoundNumber,
   type RoundScoreInput,
+  type ScoringOptions,
 } from "./scoring";
 import { generateId } from "../lib/id";
 
@@ -24,25 +25,32 @@ export interface GameState {
   finishedAt?: string;
   status: GameStatus;
   extensionEnabled: boolean;
+  /** Extension Little Giants (absent des parties créées avant son ajout). */
+  littleGiantsEnabled?: boolean;
   players: Player[];
   /** rounds[roundIndex][playerId] = saisie de ce joueur pour cette manche. */
   rounds: Record<string, RoundScoreInput>[];
 }
 
-export function maxPlayersFor(extensionEnabled: boolean): number {
-  return extensionEnabled ? MAX_PLAYERS_EXTENSION : MAX_PLAYERS_BASE;
+export function maxPlayersFor(extensionEnabled: boolean, littleGiantsEnabled = false): number {
+  return extensionEnabled || littleGiantsEnabled ? MAX_PLAYERS_EXTENSION : MAX_PLAYERS_BASE;
+}
+
+export function scoringOptionsFor(game: GameState): ScoringOptions {
+  return { flowerPower: game.extensionEnabled, littleGiants: game.littleGiantsEnabled ?? false };
 }
 
 export function createGame(
   playerNames: string[],
   extensionEnabled: boolean,
+  littleGiantsEnabled = false,
 ): GameState {
   if (playerNames.length < MIN_PLAYERS_BASE) {
     throw new Error(`Il faut au moins ${MIN_PLAYERS_BASE} joueurs.`);
   }
-  const max = maxPlayersFor(extensionEnabled);
+  const max = maxPlayersFor(extensionEnabled, littleGiantsEnabled);
   if (playerNames.length > max) {
-    throw new Error(`Maximum ${max} joueurs${extensionEnabled ? "" : " sans l'extension"}.`);
+    throw new Error(`Maximum ${max} joueurs${extensionEnabled || littleGiantsEnabled ? "" : " sans extension"}.`);
   }
 
   const players: Player[] = playerNames.map((name) => ({
@@ -55,6 +63,7 @@ export function createGame(
     createdAt: new Date().toISOString(),
     status: "in_progress",
     extensionEnabled,
+    littleGiantsEnabled,
     players,
     rounds: [],
   };
@@ -113,7 +122,7 @@ export function getStandings(game: GameState): PlayerStanding[] {
     const round = ROUND_NUMBERS[roundIndex];
     for (const player of game.players) {
       const input = roundScores[player.id] ?? EMPTY_ROUND_SCORE_INPUT;
-      const { roundTotal } = computeRoundScore(input, round, game.extensionEnabled);
+      const { roundTotal } = computeRoundScore(input, round, scoringOptionsFor(game));
       totalsByPlayer.get(player.id)!.push(roundTotal);
     }
   });

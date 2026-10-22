@@ -36,6 +36,7 @@ interface RoundScoreFormProps {
   player: Player;
   round: RoundNumber;
   extensionEnabled: boolean;
+  littleGiantsEnabled: boolean;
   value: RoundScoreInput;
   onChange: (value: RoundScoreInput) => void;
 }
@@ -44,10 +45,14 @@ export function RoundScoreForm({
   player,
   round,
   extensionEnabled,
+  littleGiantsEnabled,
   value,
   onChange,
 }: RoundScoreFormProps) {
-  const breakdown = computeRoundScore(value, round, extensionEnabled);
+  const breakdown = computeRoundScore(value, round, {
+    flowerPower: extensionEnabled,
+    littleGiants: littleGiantsEnabled,
+  });
   const merged = { ...EMPTY_ROUND_SCORE_INPUT, ...value };
 
   function set<K extends keyof RoundScoreInput>(key: K, v: number) {
@@ -86,6 +91,21 @@ export function RoundScoreForm({
             value={merged.uncoveredFacedownCards ?? 0}
             onChange={(v) => set("uncoveredFacedownCards", v)}
           />
+        )}
+
+        {littleGiantsEnabled && (
+          <>
+            <NumberField
+              label="Spirales des Géants"
+              value={merged.giantsSpirals ?? 0}
+              onChange={(v) => set("giantsSpirals", v)}
+            />
+            <NumberField
+              label="Croix annulées par un Géant"
+              value={merged.crossesCancelled ?? 0}
+              onChange={(v) => set("crossesCancelled", v)}
+            />
+          </>
         )}
       </div>
 

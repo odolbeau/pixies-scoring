@@ -43,7 +43,8 @@ export function HistoryScreen() {
                   🏆 {winners.map((w) => w.player.name).join(" & ")}
                 </span>
                 <span className="history-meta">
-                  {game.players.length} joueurs{game.extensionEnabled ? " · Extension" : ""}
+                  {game.players.length} joueurs{game.extensionEnabled ? " · Flower Power" : ""}
+                  {game.littleGiantsEnabled ? " · Little Giants" : ""}
                 </span>
               </button>
 
