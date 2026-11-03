@@ -71,26 +71,12 @@ describe("computeRoundScore", () => {
     expect(breakdown.symbolsPoints).toBe(-2);
   });
 
-  it("ajoute les spirales des Géants et annule des croix avec Little Giants", () => {
-    const input = {
-      ...EMPTY_ROUND_SCORE_INPUT,
-      spirals: 2,
-      crosses: 4,
-      giantsSpirals: 9,
-      crossesCancelled: 3,
-    };
-    const breakdown = computeRoundScore(input, 1, GIANTS);
-    expect(breakdown.totalSpirals).toBe(11);
-    expect(breakdown.totalCrosses).toBe(1);
-    expect(breakdown.symbolsPoints).toBe(10);
-  });
-
-  it("plafonne les croix annulées à 0 et ignore les champs Géants si l'extension est off", () => {
-    const input = { ...EMPTY_ROUND_SCORE_INPUT, crosses: 2, giantsSpirals: 6, crossesCancelled: 5 };
-    expect(computeRoundScore(input, 1, GIANTS).totalCrosses).toBe(0);
-    const off = computeRoundScore(input, 1, NONE);
-    expect(off.totalSpirals).toBe(0);
-    expect(off.totalCrosses).toBe(2);
+  it("ajoute les spirales des Géants avec Little Giants et les ignore sinon", () => {
+    const input = { ...EMPTY_ROUND_SCORE_INPUT, spirals: 2, crosses: 4, giantsSpirals: 9 };
+    const withGiants = computeRoundScore(input, 1, GIANTS);
+    expect(withGiants.totalSpirals).toBe(11);
+    expect(withGiants.symbolsPoints).toBe(7);
+    expect(computeRoundScore(input, 1, NONE).totalSpirals).toBe(2);
   });
 
   it("combine Flower Power et Little Giants", () => {

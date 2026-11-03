@@ -94,18 +94,11 @@ export function RoundScoreForm({
         )}
 
         {littleGiantsEnabled && (
-          <>
-            <NumberField
-              label="Spirales des Géants"
-              value={merged.giantsSpirals ?? 0}
-              onChange={(v) => set("giantsSpirals", v)}
-            />
-            <NumberField
-              label="Croix annulées par un Géant"
-              value={merged.crossesCancelled ?? 0}
-              onChange={(v) => set("crossesCancelled", v)}
-            />
-          </>
+          <NumberField
+            label="Spirales des Géants"
+            value={merged.giantsSpirals ?? 0}
+            onChange={(v) => set("giantsSpirals", v)}
+          />
         )}
       </div>
 

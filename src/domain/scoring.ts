@@ -38,10 +38,11 @@ export interface RoundScoreInput {
   colorZoneSize: number;
   /** Extension : nombre de cartes face cachée non recouvertes (rapportent 5 spirales chacune). */
   uncoveredFacedownCards?: number;
-  /** Extension Little Giants : spirales rapportées par les cartes Géant. */
+  /**
+   * Extension Little Giants : spirales rapportées par les cartes Géant. Les croix
+   * annulées par un Géant ne se saisissent pas : on ne les compte simplement pas dans `crosses`.
+   */
   giantsSpirals?: number;
-  /** Extension Little Giants : croix annulées par un Géant (retirées du total des croix). */
-  crossesCancelled?: number;
 }
 
 /** Extensions actives pour la partie. */
@@ -57,7 +58,6 @@ export const EMPTY_ROUND_SCORE_INPUT: RoundScoreInput = {
   colorZoneSize: 0,
   uncoveredFacedownCards: 0,
   giantsSpirals: 0,
-  crossesCancelled: 0,
 };
 
 export interface RoundScoreBreakdown {
@@ -87,9 +87,8 @@ export function computeRoundScore(
   // Les spirales/croix bonus de l'extension sont déjà comptées par le joueur
   // dans input.spirals/input.crosses (pas de champ séparé, voir RoundScoreInput).
   const giantsSpirals = options.littleGiants ? (input.giantsSpirals ?? 0) : 0;
-  const crossesCancelled = options.littleGiants ? (input.crossesCancelled ?? 0) : 0;
   const totalSpirals = input.spirals + extensionSpirals + giantsSpirals;
-  const totalCrosses = Math.max(0, input.crosses - crossesCancelled);
+  const totalCrosses = input.crosses;
   const symbolsPoints = totalSpirals - totalCrosses;
 
   const colorZonePoints = input.colorZoneSize * COLOR_ZONE_MULTIPLIER[round];

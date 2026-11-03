@@ -30,8 +30,8 @@ charge des multiplicateurs, des totaux et du classement.
   ou à gauche d'une ligne (hors de la grille 3×3, un par ligne/colonne). Elles
   rapportent des spirales (par carte validée, sans spirale, d'une couleur
   donnée ou non validée de leur ligne/colonne) ou annulent les croix de leur
-  ligne. Dans l'appli, deux champs dédiés : « Spirales des Géants » et « Croix
-  annulées par un Géant ». Cumulable avec Flower Power (jusqu'à 6 joueurs).
+  ligne. Dans l'appli, un seul champ dédié : « Spirales des Géants » (les croix
+  annulées ne sont simplement pas comptées dans « Croix »). Cumulable avec Flower Power (jusqu'à 6 joueurs).
 
 Sources : livret de règles officiel Pixies (Bombyx) et extension Flower
 Power, et livret Little Giants (studiobombyx.com).
