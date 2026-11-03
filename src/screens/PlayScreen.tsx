@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import {
   currentRoundNumber,
   type GameState,
@@ -26,6 +26,8 @@ export function PlayScreen({ game }: PlayScreenProps) {
   );
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
+  // Garde synchrone : `submitting` (state) n'est à jour qu'au rendu suivant, un double-clic passe.
+  const submitLock = useRef(false);
 
   if (round === null) {
     // Ne devrait pas arriver (App bascule vers ResultScreen quand la partie est finie).
@@ -33,7 +35,18 @@ export function PlayScreen({ game }: PlayScreenProps) {
   }
 
   async function handleSubmit() {
+    if (submitLock.current) return;
     setError(null);
+
+    // Après validation le formulaire est remis à zéro au même endroit : un double-clic
+    // validerait sinon la manche suivante à vide.
+    const isUntouched = game.players.every((p) =>
+      Object.values(draft[p.id]).every((v) => !v),
+    );
+    if (isUntouched) {
+      setError("Saisis les scores de la manche avant de valider.");
+      return;
+    }
     for (const player of game.players) {
       const errors = validateRoundScoreInput(draft[player.id]);
       if (errors.length > 0) {
@@ -42,6 +55,7 @@ export function PlayScreen({ game }: PlayScreenProps) {
       }
     }
 
+    submitLock.current = true;
     setSubmitting(true);
     try {
       await submitRoundScores(draft);
@@ -51,6 +65,7 @@ export function PlayScreen({ game }: PlayScreenProps) {
     } catch (err) {
       setError(err instanceof Error ? err.message : String(err));
     } finally {
+      submitLock.current = false;
       setSubmitting(false);
     }
   }
