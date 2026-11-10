@@ -22,3 +22,6 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Photos de cartes (dataset local, non déployé)
+ml/photos/
