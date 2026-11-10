@@ -46,7 +46,7 @@ export interface GridCardDef extends CardBase {
 export type GiantEffect =
   /** Colonne : par carte validée. */
   | { kind: "perValidated"; spirals: number }
-  /** Colonne : par carte visible sans aucune spirale. */
+  /** Colonne : par carte face visible sans aucune spirale (imprimée ou en bonus) ; les dos ne comptent pas. */
   | { kind: "perSpiralless"; spirals: number }
   /** Ligne : par carte visible de la couleur indiquée (le Géant compte pour lui-même). */
   | { kind: "perColor"; color: CardColor; spirals: number }
