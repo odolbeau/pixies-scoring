@@ -240,20 +240,21 @@ describe("computeRoundScore", () => {
   });
 
   it("reproduit la grille photo 012 (toutes extensions, Géant « sans spirale » face visible uniquement)", () => {
-    // Le 2 multicolore compte comme carte verte pour la croix du 7 : 2 croix. Le Géant de colonne
+    // Le 2 multicolore compte comme carte verte pour la croix du 7 (le 6 et le 2 : 2 croix) et comme
+    // carte jaune pour celle du 6 (1 croix) : 3 croix. Le Géant de colonne
     // ne vaut que pour le 2 (le 5 a une spirale dans son bonus, les dos ne comptent pas) : 4,
     // plus 6 pour le Géant de ligne rouge (1, 2 et lui-même) : 10 spirales de Géants.
     const input = {
       ...EMPTY_ROUND_SCORE_INPUT,
       validatedCardsSum: 13,
       spirals: 19,
-      crosses: 2,
+      crosses: 3,
       colorZoneSize: 8,
       uncoveredFacedownCards: 2,
       giantsSpirals: 10,
     };
     const both = { flowerPower: true, littleGiants: true };
-    expect([1, 2, 3].map((r) => computeRoundScore(input, r as 1 | 2 | 3, both).roundTotal)).toEqual([66, 74, 82]);
+    expect([1, 2, 3].map((r) => computeRoundScore(input, r as 1 | 2 | 3, both).roundTotal)).toEqual([65, 73, 81]);
   });
 
   it("reproduit la grille photo 013 (toutes extensions, deux Géants de colonne « par carte validée »)", () => {
