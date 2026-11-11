@@ -1,0 +1,620 @@
+[
+ {
+  "photo": "001",
+  "variant": "flowerPower",
+  "slots": [
+   {
+    "kind": "card",
+    "cardId": "base-27",
+    "covers": false
+   },
+   {
+    "kind": "card",
+    "cardId": "base-13",
+    "covers": false
+   },
+   {
+    "kind": "card",
+    "cardId": "base-21",
+    "covers": false
+   },
+   {
+    "kind": "card",
+    "cardId": "base-42",
+    "covers": true
+   },
+   {
+    "kind": "card",
+    "cardId": "base-07",
+    "covers": false
+   },
+   {
+    "kind": "card",
+    "cardId": "base-67",
+    "covers": true
+   },
+   {
+    "kind": "card",
+    "cardId": "base-38",
+    "covers": true
+   },
+   {
+    "kind": "empty"
+   },
+   {
+    "kind": "facedown"
+   }
+  ],
+  "giants": [],
+  "expected": {
+   "subtotals": {
+    "validatedCardsSum": 17,
+    "spirals": 12,
+    "crosses": 5,
+    "colorZoneSize": 4,
+    "uncoveredFacedownCards": 1
+   },
+   "totals": [
+    37,
+    41,
+    45
+   ]
+  }
+ },
+ {
+  "photo": "002",
+  "variant": "flowerPower",
+  "slots": [
+   {
+    "kind": "card",
+    "cardId": "base-43",
+    "covers": false
+   },
+   {
+    "kind": "card",
+    "cardId": "base-24",
+    "covers": false
+   },
+   {
+    "kind": "card",
+    "cardId": "base-26",
+    "covers": false
+   },
+   {
+    "kind": "card",
+    "cardId": "fp-08",
+    "covers": false
+   },
+   {
+    "kind": "card",
+    "cardId": "base-06",
+    "covers": true
+   },
+   {
+    "kind": "card",
+    "cardId": "base-16",
+    "covers": true
+   },
+   {
+    "kind": "card",
+    "cardId": "base-37",
+    "covers": true
+   },
+   {
+    "kind": "card",
+    "cardId": "fp-14",
+    "covers": true
+   },
+   {
+    "kind": "facedown"
+   }
+  ],
+  "giants": [],
+  "expected": {
+   "subtotals": {
+    "validatedCardsSum": 26,
+    "spirals": 25,
+    "crosses": 8,
+    "colorZoneSize": 5,
+    "uncoveredFacedownCards": 1
+   },
+   "totals": [
+    58,
+    63,
+    68
+   ]
+  }
+ },
+ {
+  "photo": "003",
+  "variant": "flowerPowerAndLittleGiants",
+  "slots": [
+   {
+    "kind": "facedown"
+   },
+   {
+    "kind": "facedown"
+   },
+   {
+    "kind": "card",
+    "cardId": "base-49",
+    "covers": false
+   },
+   {
+    "kind": "card",
+    "cardId": "base-46",
+    "covers": false
+   },
+   {
+    "kind": "facedown"
+   },
+   {
+    "kind": "card",
+    "cardId": "fp-10",
+    "covers": true
+   },
+   {
+    "kind": "card",
+    "cardId": "base-39",
+    "covers": false
+   },
+   {
+    "kind": "card",
+    "cardId": "base-08",
+    "covers": true
+   },
+   {
+    "kind": "card",
+    "cardId": "base-04",
+    "covers": false
+   }
+  ],
+  "giants": [
+   {
+    "cardId": "giant-08",
+    "index": 1
+   },
+   {
+    "cardId": "giant-14",
+    "index": 2
+   },
+   {
+    "cardId": "giant-04",
+    "index": 1
+   }
+  ],
+  "expected": {
+   "subtotals": {
+    "validatedCardsSum": 14,
+    "spirals": 10,
+    "crosses": 4,
+    "colorZoneSize": 7,
+    "uncoveredFacedownCards": 3,
+    "giantsSpirals": 5
+   },
+   "totals": [
+    54,
+    61,
+    68
+   ]
+  }
+ },
+ {
+  "photo": "005",
+  "variant": "flowerPower",
+  "slots": [
+   {
+    "kind": "card",
+    "cardId": "fp-11",
+    "covers": false
+   },
+   {
+    "kind": "empty"
+   },
+   {
+    "kind": "card",
+    "cardId": "base-21",
+    "covers": true
+   },
+   {
+    "kind": "card",
+    "cardId": "base-68",
+    "covers": true
+   },
+   {
+    "kind": "card",
+    "cardId": "base-07",
+    "covers": false
+   },
+   {
+    "kind": "card",
+    "cardId": "base-10",
+    "covers": false
+   },
+   {
+    "kind": "card",
+    "cardId": "base-14",
+    "covers": true
+   },
+   {
+    "kind": "card",
+    "cardId": "base-34",
+    "covers": false
+   },
+   {
+    "kind": "facedown"
+   }
+  ],
+  "giants": [],
+  "expected": {
+   "subtotals": {
+    "validatedCardsSum": 14,
+    "spirals": 8,
+    "crosses": 11,
+    "colorZoneSize": 7,
+    "uncoveredFacedownCards": 1
+   },
+   "totals": [
+    30,
+    37,
+    44
+   ]
+  }
+ },
+ {
+  "photo": "005",
+  "variant": "flowerPowerAndLittleGiants",
+  "slots": [
+   {
+    "kind": "card",
+    "cardId": "fp-11",
+    "covers": false
+   },
+   {
+    "kind": "empty"
+   },
+   {
+    "kind": "card",
+    "cardId": "base-21",
+    "covers": true
+   },
+   {
+    "kind": "card",
+    "cardId": "base-68",
+    "covers": true
+   },
+   {
+    "kind": "card",
+    "cardId": "base-07",
+    "covers": false
+   },
+   {
+    "kind": "card",
+    "cardId": "base-10",
+    "covers": false
+   },
+   {
+    "kind": "card",
+    "cardId": "base-14",
+    "covers": true
+   },
+   {
+    "kind": "card",
+    "cardId": "base-34",
+    "covers": false
+   },
+   {
+    "kind": "facedown"
+   }
+  ],
+  "giants": [
+   {
+    "cardId": "giant-08",
+    "index": 0
+   },
+   {
+    "cardId": "giant-14",
+    "index": 2
+   }
+  ],
+  "expected": {
+   "subtotals": {
+    "validatedCardsSum": 14,
+    "spirals": 8,
+    "crosses": 5,
+    "colorZoneSize": 8,
+    "uncoveredFacedownCards": 1,
+    "giantsSpirals": 6
+   },
+   "totals": [
+    44,
+    52,
+    60
+   ]
+  }
+ },
+ {
+  "photo": "010",
+  "variant": "flowerPower",
+  "slots": [
+   {
+    "kind": "card",
+    "cardId": "base-43",
+    "covers": false
+   },
+   {
+    "kind": "facedown"
+   },
+   {
+    "kind": "card",
+    "cardId": "base-49",
+    "covers": true
+   },
+   {
+    "kind": "card",
+    "cardId": "base-60",
+    "covers": false
+   },
+   {
+    "kind": "card",
+    "cardId": "base-64",
+    "covers": false
+   },
+   {
+    "kind": "card",
+    "cardId": "base-10",
+    "covers": true
+   },
+   {
+    "kind": "card",
+    "cardId": "base-50",
+    "covers": false
+   },
+   {
+    "kind": "card",
+    "cardId": "base-65",
+    "covers": false
+   },
+   {
+    "kind": "card",
+    "cardId": "fp-07",
+    "covers": true
+   }
+  ],
+  "giants": [],
+  "expected": {
+   "subtotals": {
+    "validatedCardsSum": 18,
+    "spirals": 14,
+    "crosses": 11,
+    "colorZoneSize": 4,
+    "uncoveredFacedownCards": 1
+   },
+   "totals": [
+    34,
+    38,
+    42
+   ]
+  }
+ },
+ {
+  "photo": "012",
+  "variant": "flowerPowerAndLittleGiants",
+  "slots": [
+   {
+    "kind": "card",
+    "cardId": "base-28",
+    "covers": false
+   },
+   {
+    "kind": "card",
+    "cardId": "base-58",
+    "covers": true
+   },
+   {
+    "kind": "card",
+    "cardId": "base-54",
+    "covers": false
+   },
+   {
+    "kind": "card",
+    "cardId": "base-22",
+    "covers": true
+   },
+   {
+    "kind": "card",
+    "cardId": "base-63",
+    "covers": false
+   },
+   {
+    "kind": "card",
+    "cardId": "fp-10",
+    "covers": false
+   },
+   {
+    "kind": "card",
+    "cardId": "fp-02",
+    "covers": true
+   },
+   {
+    "kind": "facedown"
+   },
+   {
+    "kind": "facedown"
+   }
+  ],
+  "giants": [
+   {
+    "cardId": "giant-07",
+    "index": 1
+   },
+   {
+    "cardId": "giant-06",
+    "index": 0
+   }
+  ],
+  "expected": {
+   "subtotals": {
+    "validatedCardsSum": 13,
+    "spirals": 19,
+    "crosses": 3,
+    "colorZoneSize": 8,
+    "uncoveredFacedownCards": 2,
+    "giantsSpirals": 10
+   },
+   "totals": [
+    65,
+    73,
+    81
+   ]
+  }
+ },
+ {
+  "photo": "013",
+  "variant": "flowerPowerAndLittleGiants",
+  "slots": [
+   {
+    "kind": "card",
+    "cardId": "fp-11",
+    "covers": false
+   },
+   {
+    "kind": "card",
+    "cardId": "fp-13",
+    "covers": true
+   },
+   {
+    "kind": "card",
+    "cardId": "base-21",
+    "covers": true
+   },
+   {
+    "kind": "card",
+    "cardId": "fp-08",
+    "covers": false
+   },
+   {
+    "kind": "card",
+    "cardId": "base-09",
+    "covers": true
+   },
+   {
+    "kind": "card",
+    "cardId": "base-52",
+    "covers": true
+   },
+   {
+    "kind": "empty"
+   },
+   {
+    "kind": "card",
+    "cardId": "fp-14",
+    "covers": false
+   },
+   {
+    "kind": "facedown"
+   }
+  ],
+  "giants": [
+   {
+    "cardId": "giant-09",
+    "index": 1
+   },
+   {
+    "cardId": "giant-08",
+    "index": 2
+   }
+  ],
+  "expected": {
+   "subtotals": {
+    "validatedCardsSum": 16,
+    "spirals": 19,
+    "crosses": 11,
+    "colorZoneSize": 6,
+    "uncoveredFacedownCards": 1,
+    "giantsSpirals": 12
+   },
+   "totals": [
+    53,
+    59,
+    65
+   ]
+  }
+ },
+ {
+  "photo": "014",
+  "variant": "flowerPowerAndLittleGiants",
+  "slots": [
+   {
+    "kind": "card",
+    "cardId": "base-28",
+    "covers": true
+   },
+   {
+    "kind": "facedown"
+   },
+   {
+    "kind": "card",
+    "cardId": "base-54",
+    "covers": false
+   },
+   {
+    "kind": "card",
+    "cardId": "fp-08",
+    "covers": true
+   },
+   {
+    "kind": "card",
+    "cardId": "base-09",
+    "covers": false
+   },
+   {
+    "kind": "card",
+    "cardId": "base-67",
+    "covers": false
+   },
+   {
+    "kind": "card",
+    "cardId": "fp-02",
+    "covers": true
+   },
+   {
+    "kind": "card",
+    "cardId": "fp-14",
+    "covers": false
+   },
+   {
+    "kind": "facedown"
+   }
+  ],
+  "giants": [
+   {
+    "cardId": "giant-07",
+    "index": 1
+   },
+   {
+    "cardId": "giant-09",
+    "index": 0
+   },
+   {
+    "cardId": "giant-11",
+    "index": 2
+   }
+  ],
+  "expected": {
+   "subtotals": {
+    "validatedCardsSum": 12,
+    "spirals": 14,
+    "crosses": 7,
+    "colorZoneSize": 5,
+    "uncoveredFacedownCards": 2,
+    "giantsSpirals": 17
+   },
+   "totals": [
+    56,
+    61,
+    66
+   ]
+  }
+ }
+]

@@ -11,6 +11,7 @@ export function SetupScreen() {
 
   const [extensionEnabled, setExtensionEnabled] = useState(false);
   const [littleGiantsEnabled, setLittleGiantsEnabled] = useState(false);
+  const [gridEntryEnabled, setGridEntryEnabled] = useState(false);
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
   const [newName, setNewName] = useState("");
   const [error, setError] = useState<string | null>(null);
@@ -82,7 +83,7 @@ export function SetupScreen() {
       .filter((n): n is string => Boolean(n));
 
     try {
-      await startGame(names, extensionEnabled, littleGiantsEnabled);
+      await startGame(names, extensionEnabled, littleGiantsEnabled, gridEntryEnabled);
     } catch (err) {
       setError(err instanceof Error ? err.message : String(err));
     }
@@ -108,6 +109,15 @@ export function SetupScreen() {
           onChange={(e) => handleExtensionToggle(extensionEnabled, e.target.checked)}
         />
         <span>Extension Little Giants activée</span>
+      </label>
+
+      <label className="extension-toggle">
+        <input
+          type="checkbox"
+          checked={gridEntryEnabled}
+          onChange={(e) => setGridEntryEnabled(e.target.checked)}
+        />
+        <span>Saisie par la grille de cartes (expérimental)</span>
       </label>
 
       <h2>Joueurs</h2>

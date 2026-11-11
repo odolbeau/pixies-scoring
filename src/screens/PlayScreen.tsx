@@ -98,11 +98,12 @@ export function PlayScreen({ game }: PlayScreenProps) {
         <h2>Saisir les scores de la manche {round}</h2>
         {game.players.map((player) => (
           <RoundScoreForm
-            key={player.id}
+            key={`${player.id}-${round}`}
             player={player}
             round={round}
             extensionEnabled={game.extensionEnabled}
             littleGiantsEnabled={game.littleGiantsEnabled ?? false}
+            gridEntryEnabled={game.gridEntryEnabled ?? false}
             value={draft[player.id]}
             onChange={(value) => setDraft((prev) => ({ ...prev, [player.id]: value }))}
           />

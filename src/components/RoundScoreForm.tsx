@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   computeRoundScore,
   EMPTY_ROUND_SCORE_INPUT,
@@ -5,6 +6,8 @@ import {
   type RoundScoreInput,
 } from "../domain/scoring";
 import type { Player } from "../domain/game";
+import { EMPTY_GRID, type PlayerGrid } from "../domain/gridScoring";
+import { GridEditor } from "./GridEditor";
 
 interface NumberFieldProps {
   label: string;
@@ -37,6 +40,7 @@ interface RoundScoreFormProps {
   round: RoundNumber;
   extensionEnabled: boolean;
   littleGiantsEnabled: boolean;
+  gridEntryEnabled: boolean;
   value: RoundScoreInput;
   onChange: (value: RoundScoreInput) => void;
 }
@@ -46,6 +50,7 @@ export function RoundScoreForm({
   round,
   extensionEnabled,
   littleGiantsEnabled,
+  gridEntryEnabled,
   value,
   onChange,
 }: RoundScoreFormProps) {
@@ -54,6 +59,8 @@ export function RoundScoreForm({
     littleGiants: littleGiantsEnabled,
   });
   const merged = { ...EMPTY_ROUND_SCORE_INPUT, ...value };
+  const [gridOpen, setGridOpen] = useState(false);
+  const [grid, setGrid] = useState<PlayerGrid>(EMPTY_GRID);
 
   function set<K extends keyof RoundScoreInput>(key: K, v: number) {
     onChange({ ...merged, [key]: v });
@@ -62,6 +69,23 @@ export function RoundScoreForm({
   return (
     <fieldset className="round-score-form">
       <legend>{player.name}</legend>
+
+      {gridEntryEnabled && (
+        <button type="button" className="text-button" onClick={() => setGridOpen(!gridOpen)}>
+          {gridOpen ? "Masquer la grille" : "Saisir par la grille"}
+        </button>
+      )}
+      {gridEntryEnabled && gridOpen && (
+        <GridEditor
+          options={{ flowerPower: extensionEnabled, littleGiants: littleGiantsEnabled }}
+          grid={grid}
+          onChange={setGrid}
+          onApply={(input) => {
+            onChange({ ...merged, ...input });
+            setGridOpen(false);
+          }}
+        />
+      )}
 
       <div className="fields-grid">
         <NumberField

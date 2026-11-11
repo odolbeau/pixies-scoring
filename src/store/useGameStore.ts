@@ -27,6 +27,7 @@ interface GameStore {
     playerNames: string[],
     extensionEnabled: boolean,
     littleGiantsEnabled: boolean,
+    gridEntryEnabled: boolean,
   ) => Promise<void>;
   submitRoundScores: (scores: Record<string, RoundScoreInput>) => Promise<void>;
   abandonGame: () => Promise<void>;
@@ -57,8 +58,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
     });
   },
 
-  startGame: async (playerNames, extensionEnabled, littleGiantsEnabled) => {
-    const game = createGame(playerNames, extensionEnabled, littleGiantsEnabled);
+  startGame: async (playerNames, extensionEnabled, littleGiantsEnabled, gridEntryEnabled) => {
+    const game = createGame(playerNames, extensionEnabled, littleGiantsEnabled, gridEntryEnabled);
     await saveCurrentGame(game);
     set({ currentGame: game });
   },

@@ -13,6 +13,11 @@ function names(n: number) {
 }
 
 describe("createGame", () => {
+  it("n'active la saisie par la grille que sur demande", () => {
+    expect(createGame(names(2), false).gridEntryEnabled).toBe(false);
+    expect(createGame(names(2), false, false, true).gridEntryEnabled).toBe(true);
+  });
+
   it("refuse moins de 2 joueurs", () => {
     expect(() => createGame(names(1), false)).toThrow();
   });

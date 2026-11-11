@@ -27,6 +27,8 @@ export interface GameState {
   extensionEnabled: boolean;
   /** Extension Little Giants (absent des parties créées avant son ajout). */
   littleGiantsEnabled?: boolean;
+  /** Saisie des scores par la grille de cartes (expérimental ; absent des parties plus anciennes). */
+  gridEntryEnabled?: boolean;
   players: Player[];
   /** rounds[roundIndex][playerId] = saisie de ce joueur pour cette manche. */
   rounds: Record<string, RoundScoreInput>[];
@@ -44,6 +46,7 @@ export function createGame(
   playerNames: string[],
   extensionEnabled: boolean,
   littleGiantsEnabled = false,
+  gridEntryEnabled = false,
 ): GameState {
   if (playerNames.length < MIN_PLAYERS_BASE) {
     throw new Error(`Il faut au moins ${MIN_PLAYERS_BASE} joueurs.`);
@@ -64,6 +67,7 @@ export function createGame(
     status: "in_progress",
     extensionEnabled,
     littleGiantsEnabled,
+    gridEntryEnabled,
     players,
     rounds: [],
   };

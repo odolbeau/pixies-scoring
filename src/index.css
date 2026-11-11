@@ -464,3 +464,144 @@ button {
     grid-template-columns: 1fr 1fr 1fr;
   }
 }
+
+/* Saisie par la grille */
+
+.grid-editor {
+  margin: 8px 0 16px;
+}
+
+.grid-board {
+  display: grid;
+  gap: 6px;
+  align-items: stretch;
+}
+
+.grid-slot {
+  width: 100%;
+  min-height: 52px;
+  position: relative;
+  border: 1px dashed var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--text);
+  font-size: 18px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.grid-slot.filled {
+  border-style: solid;
+  color: var(--text-h);
+}
+
+.grid-slot.active {
+  border-color: var(--accent);
+  background: var(--winner-bg);
+}
+
+.grid-slot.giant {
+  min-height: 32px;
+  font-size: 13px;
+}
+
+.covers-mark {
+  position: absolute;
+  top: 2px;
+  right: 5px;
+  font-size: 12px;
+  color: var(--accent);
+}
+
+.card-picker {
+  margin-top: 12px;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface);
+}
+
+.covers-toggle {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.picker-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+
+.chip {
+  padding: 6px 10px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--text);
+  cursor: pointer;
+}
+
+.chip.active {
+  border-color: var(--accent);
+  background: var(--winner-bg);
+  color: var(--accent);
+}
+
+.picker-list {
+  list-style: none;
+  margin: 0 0 8px;
+  padding: 0;
+  max-height: 240px;
+  overflow-y: auto;
+}
+
+.picker-list button {
+  width: 100%;
+  padding: 10px 8px;
+  border: none;
+  border-bottom: 1px solid var(--border);
+  background: none;
+  color: var(--text);
+  text-align: left;
+  cursor: pointer;
+}
+
+.muted {
+  color: var(--text);
+  opacity: 0.7;
+}
+
+.grid-summary {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 6px 12px;
+  margin: 12px 0 0;
+}
+
+.grid-summary div {
+  display: flex;
+  justify-content: space-between;
+}
+
+.grid-summary dt,
+.grid-summary dd {
+  margin: 0;
+}
+
+.grid-summary dd {
+  font-weight: 600;
+  color: var(--text-h);
+}
+
+.grid-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.grid-actions .primary {
+  flex: 1;
+}
