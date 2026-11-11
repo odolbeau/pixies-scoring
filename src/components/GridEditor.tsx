@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import {
   BASE_CARDS,
   FLOWER_POWER_CARDS,
@@ -15,6 +15,7 @@ import {
   type PlayerGrid,
 } from "../domain/gridScoring";
 import type { RoundScoreInput, ScoringOptions } from "../domain/scoring";
+import { analyzeGridPhoto } from "../vision/recognizePhoto";
 
 /** Emplacement en cours d'édition : une case de la grille, ou un Géant (ligne à gauche, colonne en haut). */
 type Target =
@@ -37,6 +38,25 @@ function slotLabel(grid: PlayerGrid, index: number): string {
   return card && card.set !== "littleGiants" ? String(card.number) : "?";
 }
 
+const COLOR_TINT: Record<string, string> = {
+  blue: "#cfe3ff",
+  green: "#d3f0d0",
+  yellow: "#fff1b8",
+  red: "#ffd2cf",
+};
+
+/** Teinte de fond d'une carte : sa couleur, ou des bandes pour une carte bicolore ou multicolore. */
+function cardTint(cardId: string): React.CSSProperties | undefined {
+  const card = cardById(cardId);
+  if (!card || card.colors.length === 0) return undefined;
+  const tints = card.colors.map((c) => COLOR_TINT[c]);
+  if (tints.length === 1) return { background: tints[0] };
+  const step = 100 / tints.length;
+  return {
+    background: `linear-gradient(135deg, ${tints.map((t, i) => `${t} ${i * step}% ${(i + 1) * step}%`).join(", ")})`,
+  };
+}
+
 function giantAt(grid: PlayerGrid, direction: "row" | "column", index: number) {
   return grid.giants.find((g) => {
     const def = cardById(g.cardId);
@@ -50,6 +70,31 @@ export function GridEditor({ options, grid, onChange, onApply }: GridEditorProps
   const [colorFilter, setColorFilter] = useState<string | null>(null);
 
   const input = useMemo(() => computeGridInput(grid, options), [grid, options]);
+
+  const photoInput = useRef<HTMLInputElement>(null);
+  const [photoStatus, setPhotoStatus] = useState<{ busy: boolean; message: string; error?: boolean }>({
+    busy: false,
+    message: "",
+  });
+
+  async function onPhoto(file: File) {
+    setPhotoStatus({ busy: true, message: "Préparation de la photo…" });
+    try {
+      const result = await analyzeGridPhoto(file, options, (message) => setPhotoStatus({ busy: true, message }));
+      onChange(result.grid);
+      select(null);
+      setPhotoStatus({
+        busy: false,
+        message: `${result.filled} carte(s) reconnue(s) en ${Math.round(result.ms / 100) / 10} s. Vérifiez chaque emplacement et cochez les cartes qui en recouvrent une autre (⧉) : la reconnaissance ne voit pas celles qui sont entièrement cachées.`,
+      });
+    } catch (e) {
+      setPhotoStatus({
+        busy: false,
+        error: true,
+        message: e instanceof Error ? e.message : "La reconnaissance a échoué.",
+      });
+    }
+  }
 
   const gridCards: GridCardDef[] = useMemo(
     () => (options.flowerPower ? [...BASE_CARDS, ...FLOWER_POWER_CARDS] : BASE_CARDS),
@@ -83,6 +128,27 @@ export function GridEditor({ options, grid, onChange, onApply }: GridEditorProps
 
   return (
     <div className="grid-editor">
+      <div className="photo-import">
+        <input
+          ref={photoInput}
+          type="file"
+          accept="image/*"
+          hidden
+          onChange={(e) => {
+            const file = e.target.files?.[0];
+            e.target.value = "";
+            if (file) void onPhoto(file);
+          }}
+        />
+        <button type="button" disabled={photoStatus.busy} onClick={() => photoInput.current?.click()}>
+          {photoStatus.busy ? "Analyse en cours…" : "Photographier ma grille"}
+        </button>
+        {photoStatus.message && (
+          <p className={photoStatus.error ? "photo-status error" : "photo-status muted"} role="status">
+            {photoStatus.message}
+          </p>
+        )}
+      </div>
       <div className="grid-board" style={{ gridTemplateColumns: `auto repeat(${GRID_SIZE}, 1fr)` }}>
         <span />
         {Array.from({ length: GRID_SIZE }, (_, c) => (
@@ -91,6 +157,7 @@ export function GridEditor({ options, grid, onChange, onApply }: GridEditorProps
               <button
                 type="button"
                 className={`grid-slot giant${giantAt(grid, "column", c) ? " filled" : ""}`}
+                style={cardTint(giantAt(grid, "column", c)?.cardId ?? "")}
                 aria-label={`Géant de la colonne ${c + 1}`}
                 onClick={() => select({ kind: "giant", direction: "column", index: c })}
               >
@@ -105,6 +172,7 @@ export function GridEditor({ options, grid, onChange, onApply }: GridEditorProps
               <button
                 type="button"
                 className={`grid-slot giant${giantAt(grid, "row", r) ? " filled" : ""}`}
+                style={cardTint(giantAt(grid, "row", r)?.cardId ?? "")}
                 aria-label={`Géant de la ligne ${r + 1}`}
                 onClick={() => select({ kind: "giant", direction: "row", index: r })}
               >
@@ -121,6 +189,7 @@ export function GridEditor({ options, grid, onChange, onApply }: GridEditorProps
                 key={index}
                 type="button"
                 className={`grid-slot${slot.kind !== "empty" ? " filled" : ""}${active ? " active" : ""}`}
+                style={slot.kind === "card" ? cardTint(slot.cardId) : undefined}
                 aria-label={`Ligne ${r + 1}, colonne ${c + 1}`}
                 onClick={() => select({ kind: "slot", index })}
               >

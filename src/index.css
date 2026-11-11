@@ -605,3 +605,19 @@ button {
 .grid-actions .primary {
   flex: 1;
 }
+
+.photo-import {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin-bottom: 0.75rem;
+}
+
+.photo-status {
+  margin: 0;
+  font-size: 0.85rem;
+}
+
+.photo-status.error {
+  color: #b3261e;
+}
